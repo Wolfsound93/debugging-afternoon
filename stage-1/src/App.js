@@ -1,7 +1,8 @@
-import React, { Component } from "react";
-import StoreFront from "./Components/StoreFront/StoreFront";
-import ShoppingCart from "./Components/ShoppingCart/ShoppingCart";
-import NavBar from "./Components/NavBar/NavBar";
+import React, { Component } from 'react';
+import StoreFront from './Components/StoreFront/StoreFront';
+import ShoppingCart from './Components/ShoppingCart/ShoppingCart';
+import NavBar from './Components/NavBar/NavBar';
+import axios from 'axios';
 
 class App extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class App extends Component {
   }
   componentDidMount() {
     axios
-      .get("https://practiceapi.devmountain.com/products/")
+      .get('https://practiceapi.devmountain.com/products/')
       .then(response => {
         this.setState({
           products: response.data
@@ -37,7 +38,7 @@ class App extends Component {
     });
   }
   navigate(location) {
-    if (location === "cart") {
+    if (location === 'cart') {
       this.setState({
         showCart: true
       });
@@ -48,15 +49,15 @@ class App extends Component {
     }
   }
   render() {
-    const { products, showCart } = this.state;
+    const { products, showCart, cart } = this.state;
     return (
-      <div className="App">
+      <div className='App'>
         <NavBar navigate={this.navigate} />
-        <div className="main-container">
+        <div className='main-container'>
           {showCart ? (
-            <ShoppingCart cart={cart} />
+            <ShoppingCart cart={cart} removeFromCart={this.removeFromCart} />
           ) : (
-            <StoreFront products={products} />
+            <StoreFront products={products} addToCart={this.addToCart} />
           )}
         </div>
       </div>

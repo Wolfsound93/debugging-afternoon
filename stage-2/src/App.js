@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import axios from "axios";
-import StoreFront from "./Components/StoreFront/StoreFront";
-import ShoppingCart from "./Components/ShoppingCart/ShoppingCart";
-import NavBar from "./Components/NavBar/NavBar";
+import React, { Component } from 'react';
+import axios from 'axios';
+import StoreFront from './Components/StoreFront/StoreFront';
+import ShoppingCart from './Components/ShoppingCart/ShoppingCart';
+import NavBar from './Components/NavBar/NavBar';
 
 class App extends Component {
-  constuctor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       products: [],
@@ -18,27 +18,30 @@ class App extends Component {
   }
   componentDidMount() {
     axios
-      .get("https://practiceapi.devmountain.com/products/")
+      .get('https://practiceapi.devmountain.com/products/')
       .then(response => {
+        // console.log(response);
         this.setState({
-          products: response
+          products: response.data
         });
       });
   }
   addToCart(item) {
+    // console.log(item);
     this.setState({
-      cart: item
+      cart: [...this.state.cart, item]
     });
   }
   removeFromCart(index) {
-    let cartCopy = this.state.products.slice();
+    console.log(index);
+    let cartCopy = this.state.cart.slice(index);
     cartCopy.splice(index, 1);
     this.setState({
       cart: cartCopy
     });
   }
   navigate(location) {
-    if (location === "cart") {
+    if (location === 'cart') {
       this.setState({
         showCart: true
       });
@@ -50,10 +53,11 @@ class App extends Component {
   }
   render() {
     const { products, cart, showCart } = this.state;
+    // console.log(cart);
     return (
-      <div className="App">
+      <div className='App'>
         <NavBar navigate={this.navigate} />
-        <div className="main-container">
+        <div className='main-container'>
           {showCart ? (
             <ShoppingCart cart={cart} removeFromCart={this.removeFromCart} />
           ) : (
